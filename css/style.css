@@ -1,0 +1,551 @@
+/* =========================================================
+   GameVault — Design Tokens
+   Palette: deep indigo base, amber / pink / teal accents
+   Type: Press Start 2P (display, sparing) + Space Grotesk (body) + JetBrains Mono (data)
+   ========================================================= */
+:root {
+  --bg: #12121c;
+  --bg-elevated: #1b1b29;
+  --bg-elevated-2: #232336;
+  --text: #f0eee6;
+  --text-muted: #a8a6bc;
+  --accent-amber: #ffb84d;
+  --accent-pink: #ff4d8d;
+  --accent-teal: #4dd9c7;
+  --border: rgba(240, 238, 230, 0.1);
+  --border-strong: rgba(240, 238, 230, 0.22);
+
+  --font-display: "Press Start 2P", "Courier New", monospace;
+  --font-body: "Space Grotesk", "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow-soft: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  margin: 0;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+::selection { background: var(--accent-pink); color: #12121c; }
+
+/* Focus visibility (accessibility floor) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent-teal);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-teal);
+}
+
+.display-heading {
+  font-family: var(--font-display);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+/* =========================================================
+   Navigation — console-menu bar
+   ========================================================= */
+.gv-nav {
+  background: rgba(18, 18, 28, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.gv-nav .navbar-brand {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.gv-nav .navbar-brand .bracket {
+  color: var(--accent-pink);
+}
+
+.gv-nav .nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--text-muted) !important;
+  padding: 0.5rem 1rem !important;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.gv-nav .nav-link::before {
+  content: "▸";
+  position: absolute;
+  left: -0.1rem;
+  opacity: 0;
+  color: var(--accent-amber);
+  transition: opacity 0.2s ease;
+}
+
+.gv-nav .nav-link:hover,
+.gv-nav .nav-link.active {
+  color: var(--text) !important;
+}
+
+.gv-nav .nav-link.active::before,
+.gv-nav .nav-link:hover::before {
+  opacity: 1;
+}
+
+.gv-nav .navbar-toggler {
+  border-color: var(--border-strong);
+}
+
+/* =========================================================
+   Hero + CRT Carousel (signature element)
+   ========================================================= */
+.hero {
+  padding: 3.5rem 0 2.5rem;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2.1rem);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.hero h1 span { color: var(--accent-amber); }
+
+.hero p.lead {
+  color: var(--text-muted);
+  max-width: 42rem;
+  font-size: 1.05rem;
+}
+
+.crt-frame {
+  position: relative;
+  background: linear-gradient(160deg, #26263a, #17172400);
+  border: 1px solid var(--border-strong);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: var(--shadow-soft);
+}
+
+.crt-frame::after {
+  /* scanline overlay */
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 10px;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.12) 0px,
+    rgba(0, 0, 0, 0.12) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  mix-blend-mode: overlay;
+  z-index: 3;
+}
+
+.crt-frame .screen-label {
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  background: var(--bg);
+  padding: 2px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--accent-teal);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+}
+
+#featuredCarousel {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#featuredCarousel .carousel-item {
+  min-height: 380px;
+}
+
+.carousel-slide-bg {
+  position: relative;
+  min-height: 380px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+}
+
+.carousel-slide-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(18, 18, 28, 0.15) 0%, rgba(18, 18, 28, 0.95) 92%);
+}
+
+.carousel-slide-content {
+  position: relative;
+  z-index: 2;
+  padding: 1.75rem 2rem 2.25rem;
+  width: 100%;
+}
+
+.carousel-slide-content .tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--accent-pink);
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 0.4rem;
+}
+
+.carousel-slide-content h3 {
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+
+.carousel-slide-content p {
+  color: var(--text-muted);
+  max-width: 40rem;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.carousel-slide-content .meta {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent-teal);
+  margin-top: 0.5rem;
+}
+
+#featuredCarousel .carousel-control-prev,
+#featuredCarousel .carousel-control-next {
+  width: 6%;
+  opacity: 0.7;
+}
+
+#featuredCarousel .carousel-indicators [data-bs-target] {
+  background-color: var(--accent-amber);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.carousel-placeholder,
+.carousel-error {
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.pixel-spinner {
+  width: 28px;
+  height: 28px;
+  border: 4px solid var(--border-strong);
+  border-top-color: var(--accent-pink);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================================
+   Section shells
+   ========================================================= */
+.section {
+  padding: 3.5rem 0;
+}
+
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.section-heading h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  margin: 0;
+}
+
+.section-heading .section-note {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.link-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  height: 100%;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.link-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-teal);
+}
+
+.link-card .eyebrow { display: block; margin-bottom: 0.6rem; }
+.link-card h3 { margin-bottom: 0.5rem; font-size: 1.15rem; }
+.link-card p { color: var(--text-muted); margin-bottom: 1rem; font-size: 0.92rem; }
+.link-card .go { font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent-amber); }
+
+/* =========================================================
+   Games browser (API + search/filter)
+   ========================================================= */
+.filter-bar {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.filter-bar label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.filter-bar .form-control,
+.filter-bar .form-select {
+  background: var(--bg-elevated-2);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  font-family: var(--font-body);
+}
+
+.filter-bar .form-control:focus,
+.filter-bar .form-select:focus {
+  background: var(--bg-elevated-2);
+  color: var(--text);
+  border-color: var(--accent-teal);
+  box-shadow: 0 0 0 0.2rem rgba(77, 217, 199, 0.18);
+}
+
+.filter-bar .form-control::placeholder { color: var(--text-muted); }
+
+.results-count {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.game-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-pink);
+}
+
+.game-card .thumb {
+  aspect-ratio: 16 / 9;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--bg-elevated-2);
+}
+
+.game-card .body {
+  padding: 1rem 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.game-card h4 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.game-card .rating {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-amber);
+}
+
+.game-card .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.chip {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-strong);
+  color: var(--text-muted);
+}
+
+.state-panel {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+}
+
+.state-panel.error { color: var(--accent-pink); border-color: rgba(255, 77, 141, 0.4); }
+
+/* =========================================================
+   Retro cartridge cards (curated content, no external images)
+   ========================================================= */
+.cartridge {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.cartridge::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: var(--cart-color, var(--accent-amber));
+}
+
+.cartridge .cart-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--cart-color, var(--accent-amber));
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.cartridge h4 {
+  font-size: 1.05rem;
+  margin-bottom: 0.35rem;
+}
+
+.cartridge .cart-meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.cartridge p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 0;
+}
+
+.cartridge .notch {
+  position: absolute;
+  bottom: -10px;
+  right: 18px;
+  width: 26px;
+  height: 20px;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px 4px 0 0;
+}
+
+/* =========================================================
+   Footer
+   ========================================================= */
+.gv-footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+  margin-top: 3rem;
+}
+
+.gv-footer p {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  margin: 0;
+}
+
+/* Responsive tightening */
+@media (max-width: 767.98px) {
+  .hero { padding: 2rem 0 1.5rem; }
+  .carousel-slide-bg,
+  #featuredCarousel .carousel-item,
+  .carousel-placeholder,
+  .carousel-error { min-height: 300px; }
+  .section { padding: 2.5rem 0; }
+}
