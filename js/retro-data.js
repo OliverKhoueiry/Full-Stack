@@ -149,18 +149,23 @@ class RetroGallery {
 
   render() {
     this.mountEl.innerHTML = this.games
-      .map(
-        (game) => `
+      .map((game) => {
+        const initial = game.title.trim().charAt(0).toUpperCase();
+        return `
         <div class="col-sm-6 col-lg-4">
           <div class="cartridge" style="--cart-color:${game.color}">
-            <span class="cart-label">${game.genre}</span>
-            <h4>${game.title}</h4>
-            <div class="cart-meta">${game.year} &nbsp;·&nbsp; ${game.platform}</div>
-            <p>${game.description}</p>
-            <div class="notch" aria-hidden="true"></div>
+            <div class="art">
+              <span class="initial" aria-hidden="true">${initial}</span>
+              <span class="cart-label">${game.genre}</span>
+            </div>
+            <div class="body">
+              <h4>${game.title}</h4>
+              <div class="cart-meta">${game.year} &nbsp;·&nbsp; ${game.platform}</div>
+              <p>${game.description}</p>
+            </div>
           </div>
-        </div>`
-      )
+        </div>`;
+      })
       .join("");
   }
 }
