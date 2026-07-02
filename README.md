@@ -21,7 +21,7 @@ on 500,000+ games (covers, ratings, genres, platforms, release dates).
 
 ```js
 const GV_CONFIG = {
-  RAWG_API_KEY: "YOUR_RAWG_API_KEY_HERE",
+  RAWG_API_KEY: "7af822651bdf467094f11824b4425fd8",
   RAWG_BASE_URL: "https://api.rawg.io/api",
 };
 ```
@@ -31,10 +31,9 @@ const GV_CONFIG = {
 The assigned requirement was a **Bootstrap carousel for a featured section**. It's implemented
 in `js/carousel.js` (`FeaturedCarousel` class): the class fetches 6 recent/trending games from
 RAWG, then builds Bootstrap 5's native carousel markup (`data-bs-ride`, indicators, prev/next
-controls) dynamically from that data. It's wrapped in a CRT-style bezel (`.crt-frame` in
-`css/style.css`) with a scanline overlay as this project's visual signature. Loading, empty, and
-error states are handled before the carousel markup is injected — see the comment block at the
-top of `carousel.js`.
+controls) dynamically from that data, rendered as a full-bleed hero banner with a dark gradient
+overlay for text legibility. Loading, empty, and error states are handled before the carousel
+markup is injected — see the comment block at the top of `carousel.js`.
 
 ## Tech stack
 
@@ -54,30 +53,26 @@ anchor-based routing (`<a href="page.html">`).
 Deploy for free on Vercel, Netlify, or GitHub Pages — this is a static site (no build step
 needed), so any of the three works by pointing it at the repo root.
 
-- Live URL: _add after deploying_
-- Repo: _add your GitHub repo link_
+- Live URL: https://full-stack-xi-two.vercel.app
+- Repo: https://github.com/OliverKhoueiry/Full-Stack
 
 ## Evidence
 
 Mobile / tablet / desktop screenshots go in `/evidence`. Take these after your API key is live
 and the carousel is actually rendering game art, not the loading state.
 
-## AI-use appendix
+## AI-Use Appendix
+Tools used and purpose of use
+Claude (Anthropic) was used throughout the development of this project to accelerate implementation of well-defined, repetitive front-end structures, while all architectural decisions, testing, debugging verification, and final design judgments were made by the author. Specifically, Claude was used to: (1) scaffold the initial HTML structure and ES6 class architecture for the RAWG API wrapper (GameVaultAPI), the Bootstrap carousel builder (FeaturedCarousel), the search/filter logic (GameBrowser), and the curated content renderer (RetroGallery); (2) propose and implement a visual redesign of the site's styling; and (3) assist in diagnosing and resolving functional bugs identified by the author during manual testing of the deployed site.
 
-> Fill this in honestly and specifically per the assignment brief — tools, prompts, and at least
-> 2 concrete things the AI got wrong and how you found/fixed them. Example structure below;
-> replace with your real usage.
+Representative prompts
 
-**Tools used:**
-- Claude — scaffolded the initial HTML/CSS/JS structure, the RAWG API wrapper class, and the
-  carousel/filter logic.
+An initial scaffolding request describing the project's technical requirements, including the mandated Bootstrap carousel component, RAWG API integration, client-side search and filtering functionality, and a curated collection of fifteen retro games.
+A revision request to replace the initial visual design, which was assessed by the author as generic and stylistically indicative of unmodified AI output, with a design direction modeled on a specific, named reference interface (the PlayStation Store).
+A follow-up request to replace the retro collection's placeholder visual elements with cover art retrieved dynamically from the RAWG API.
 
-**Example prompts used (replace with your actual ones):**
-1. "..."
-2. "..."
-3. "..."
+Identified errors and corrective actions
 
-**Things the AI got wrong / had to be fixed (replace with your real findings):**
-1. _e.g._ — describe an issue you hit (a RAWG field name that didn't match what was assumed, a
-   filter edge case, a CSS specificity conflict) and exactly how you diagnosed and fixed it.
-2. _e.g._ — same, for a second issue.
+Generic initial visual design. The first design iteration—featuring a retro CRT-scanline aesthetic and pixel-styled typography—was identified by the author as visually templated and unrepresentative of deliberate design intent. This was determined through direct visual inspection of the rendered output rather than through any automated check. The issue was resolved by directing a full redesign around a specific, named visual reference, which produced a more distinctive and intentional result better aligned with the project's design requirements.
+Incorrect API-sourced imagery. When cover art retrieval was implemented for the retro collection, the initial approach queried the RAWG API by game title and used the first returned result without further validation. This occasionally returned artwork from a later remaster or re-release rather than the original title being described in the accompanying text—for example, displaying contemporary cover art alongside descriptive text referencing a title's original 1990s release. This discrepancy was identified by the author through manual comparison of each card's image against its listed release year and platform. The defect was corrected by constraining API queries to a date range surrounding each title's documented release year and selecting the result with the closest matching release date, rather than accepting the first result returned.
+Insufficient text contrast. Following the visual redesign, descriptive text on the Retro Shelf page inherited Bootstrap's default muted-gray text color, which produced insufficient contrast against the page's near-black background and compromised readability. This was identified through visual review of the deployed site. The issue was resolved by defining and applying a custom text color with adequate contrast for that specific element.
