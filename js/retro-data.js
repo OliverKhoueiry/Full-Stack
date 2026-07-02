@@ -151,14 +151,24 @@ class RetroGallery {
   async init() {
     this.#renderSkeleton();
 
-    // Look up real cover art for each curated title via the RAWG API.
-    // Falls back to the gradient tile (no image) per-card if a lookup fails
-    // or the game just isn't found — never blocks the whole page.
+    // Look up real cover art for each curated title via the RAWG API,
+    // constrained to a window around the game's actual release year so
+    // we don't accidentally grab a modern remaster/remake's cover art
+    // instead of the original release the text is describing.
     await Promise.allSettled(
       this.games.map(async (game) => {
         try {
-          const results = await this.api.getGames({ search: game.title, pageSize: 1 });
-          game.image = results[0]?.background_image || null;
+          const dateRange = `${game.year - 1}-01-01,${game.year + 1}-12-31`;
+          const results = await this.api.getGames({
+            search: game.title,
+            pageSize: 5,
+            dates: dateRange,
+          });
+          const match = this.#closestByYear(results, game.year);
+          // If nothing matches within the year window, leave it unset
+          // (falls back to the gradient tile) rather than risk showing
+          // a mismatched version.
+          game.image = match?.background_image || null;
         } catch {
           game.image = null;
         }
@@ -166,6 +176,23 @@ class RetroGallery {
     );
 
     this.render();
+  }
+
+  #closestByYear(results, targetYear) {
+    let best = null;
+    let bestDiff = Infinity;
+
+    for (const r of results) {
+      if (!r.released) continue;
+      const year = parseInt(r.released.slice(0, 4), 10);
+      if (Number.isNaN(year)) continue;
+      const diff = Math.abs(year - targetYear);
+      if (diff < bestDiff) {
+        best = r;
+        bestDiff = diff;
+      }
+    }
+    return best;
   }
 
   #renderSkeleton() {
