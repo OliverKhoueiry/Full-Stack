@@ -295,6 +295,11 @@ select:focus-visible {
   color: var(--text-muted);
 }
 
+.retro-note {
+  color: #b6bacc;
+  font-size: 0.95rem;
+}
+
 .link-card {
   background: var(--bg-elevated);
   border: 1px solid var(--border);
