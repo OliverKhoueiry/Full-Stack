@@ -47,11 +47,15 @@
   <footer class="gv-footer"></footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/retro-data.js"></script>
   <script src="js/nav.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      new RetroGallery(RETRO_GAMES, document.getElementById("retroGrid")).render();
+      const api = new GameVaultAPI(GV_CONFIG.RAWG_API_KEY, GV_CONFIG.RAWG_BASE_URL);
+      const gallery = new RetroGallery(api, RETRO_GAMES, document.getElementById("retroGrid"));
+      gallery.init();
     });
   </script>
 </body>

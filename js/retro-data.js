@@ -142,20 +142,64 @@ const RETRO_GAMES = [
 ];
 
 class RetroGallery {
-  constructor(games, mountEl) {
+  constructor(api, games, mountEl) {
+    this.api = api;
     this.games = games;
     this.mountEl = mountEl;
+  }
+
+  async init() {
+    this.#renderSkeleton();
+
+    // Look up real cover art for each curated title via the RAWG API.
+    // Falls back to the gradient tile (no image) per-card if a lookup fails
+    // or the game just isn't found — never blocks the whole page.
+    await Promise.allSettled(
+      this.games.map(async (game) => {
+        try {
+          const results = await this.api.getGames({ search: game.title, pageSize: 1 });
+          game.image = results[0]?.background_image || null;
+        } catch {
+          game.image = null;
+        }
+      })
+    );
+
+    this.render();
+  }
+
+  #renderSkeleton() {
+    this.mountEl.innerHTML = this.games
+      .map(
+        () => `
+        <div class="col-sm-6 col-lg-4">
+          <div class="cartridge">
+            <div class="art">
+              <div class="pixel-spinner"></div>
+            </div>
+            <div class="body">
+              <div class="skeleton-line" style="width:60%"></div>
+              <div class="skeleton-line" style="width:40%"></div>
+            </div>
+          </div>
+        </div>`
+      )
+      .join("");
   }
 
   render() {
     this.mountEl.innerHTML = this.games
       .map((game) => {
         const initial = game.title.trim().charAt(0).toUpperCase();
+        const artStyle = game.image
+          ? `background-image:url('${game.image}'); --cart-color:${game.color}`
+          : `--cart-color:${game.color}`;
+
         return `
         <div class="col-sm-6 col-lg-4">
-          <div class="cartridge" style="--cart-color:${game.color}">
-            <div class="art">
-              <span class="initial" aria-hidden="true">${initial}</span>
+          <div class="cartridge">
+            <div class="art" style="${artStyle}">
+              ${game.image ? "" : `<span class="initial" aria-hidden="true">${initial}</span>`}
               <span class="cart-label">${game.genre}</span>
             </div>
             <div class="body">
