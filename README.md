@@ -21,7 +21,7 @@ on 500,000+ games (covers, ratings, genres, platforms, release dates).
 
 ```js
 const GV_CONFIG = {
-  RAWG_API_KEY: "RAWG_API_KEY_HERE_FOR_SECURITY",
+  RAWG_API_KEY: "7af822651bdf467094f11824b4425fd8",
   RAWG_BASE_URL: "https://api.rawg.io/api",
 };
 ```
