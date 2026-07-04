@@ -1,6 +1,6 @@
 # GameVault
 
-**Author:** Oliver — Lebanese University, Faculty of Engineering, Branch 2 (Roumieh)
+**Author:** Oliver Khoueiry— Lebanese University, Faculty of Engineering, Branch 2 (Roumieh)
 **Course:** Full Stack Development — Final Project 2026
 
 ## About
